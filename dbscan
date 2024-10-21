@@ -1,0 +1,30 @@
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+
+# Load the dataset
+df = pd.read_csv('Mall_Customers.csv')
+
+# Prepare the data
+X_train = df[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']]
+
+# Scale features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+
+# Apply DBSCAN
+clustering = DBSCAN(eps=0.5, min_samples=5).fit(X_train_scaled)
+DBSCAN_dataset = X_train.copy()
+DBSCAN_dataset['Cluster'] = clustering.labels_
+
+# Analyze clusters
+cluster_counts = DBSCAN_dataset['Cluster'].value_counts().to_frame()
+
+# Visualize results
+plt.figure(figsize=(10, 7))
+sns.scatterplot(data=DBSCAN_dataset, x='Annual Income (k$)', y='Spending Score (1-100)', hue='Cluster', palette='viridis')
+plt.title('Clusters of Mall Customers')
+plt.show()
