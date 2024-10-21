@@ -1,0 +1,14 @@
+from sklearn.cluster import SpectralClustering
+from sklearn.datasets import make_moons
+import matplotlib.pyplot as plt
+# Generate a dataset
+X, _ = make_moons(n_samples=200, noise=0.05)
+# Initialize Spectral Clustering
+clustering = SpectralClustering(n_clusters=2, affinity='nearest_neighbors', n_neighbors=10)
+# Fit the model to the data
+clustering.fit(X)
+# Predict clusters
+labels = clustering.labels_
+# Plot the results
+plt.scatter(X[:, 0], X[:, 1], c=labels, cmap=plt.cm.Spectral)
+plt.show()
